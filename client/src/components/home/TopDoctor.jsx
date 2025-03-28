@@ -20,7 +20,7 @@ const TopDoctor = () => {
         <Link to={"/doctors"}>
           <button
             onClick={() => scrollTo(0, 0)}
-            className="bg-blue-50 text-gray-600 px-12 py-3 rounded-full mt-10 cursor-pointer"
+            className="bg-primary text-white px-12 py-3 rounded-full mt-10 hover:scale-105 transition-all duration-300 cursor-pointer"
           >
             More
           </button>

@@ -67,12 +67,6 @@ const Appointment = () => {
     getAvailableSlots();
   }, [docInfo]);
 
-  useEffect(() => {
-    console.log(docSlots);
-  }, [docSlots]);
-
-  console.log(docInfo);
-
   if (!docInfo) return <section className="min-h-screen">Loading...</section>;
 
   return (

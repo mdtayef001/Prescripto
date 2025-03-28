@@ -1,5 +1,6 @@
 import React from "react";
 import { assets } from "../assets/assets_frontend/assets";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -19,10 +20,42 @@ const Footer = () => {
         <div>
           <p className="text-xl font-medium mb-5 uppercase">Company</p>
           <ul className="space-y-2 text-gray-600">
-            <li>Home</li>
-            <li>About Us</li>
-            <li>Contact us</li>
-            <li>Privacy policy</li>
+            <li>
+              <Link
+                onClick={() => scrollTo(0, 0)}
+                className="hover:underline"
+                to="/"
+              >
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link
+                onClick={() => scrollTo(0, 0)}
+                className="hover:underline"
+                to="/doctors"
+              >
+                All Doctor
+              </Link>
+            </li>
+            <li>
+              <Link
+                onClick={() => scrollTo(0, 0)}
+                className="hover:underline"
+                to="/about"
+              >
+                About
+              </Link>
+            </li>
+            <li>
+              <Link
+                onClick={() => scrollTo(0, 0)}
+                className="hover:underline"
+                to="/contact"
+              >
+                Contact
+              </Link>
+            </li>
           </ul>
         </div>
         {/* right */}

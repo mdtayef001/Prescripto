@@ -7,6 +7,8 @@ import MyProfile from "../pages/My-Profile/MyProfile";
 import MyAppointments from "../pages/My-Appointments/MyAppointments";
 import Doctors from "../pages/Doctors/Doctors";
 import Appointment from "../pages/Appointment/Appointment";
+import About from "../pages/About/About";
+import Contact from "../pages/Contact/Contact";
 
 const routes = createBrowserRouter([
   {
@@ -28,6 +30,14 @@ const routes = createBrowserRouter([
       {
         path: "/appointment/:docID",
         element: <Appointment />,
+      },
+      {
+        path: "/about",
+        element: <About />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
       },
       // user profile routes
       {

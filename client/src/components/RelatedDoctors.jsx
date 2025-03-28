@@ -15,7 +15,6 @@ const RelatedDoctors = ({ docID, speciality }) => {
       setRelDoc(doctorData);
     }
   }, [doctors, speciality, docID]);
-  console.log(relDoc);
 
   return (
     <section className=" my-16 text-gray-900 md:mx-10 ">
