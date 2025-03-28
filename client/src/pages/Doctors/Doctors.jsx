@@ -5,9 +5,9 @@ import DoctorCard from "../../components/DoctorCard/DoctorCard";
 
 const Doctors = () => {
   const { specialty } = useParams();
-  const [filterDoc, setFilterDoc] = useState([]);
-  const { doctors } = useAppContext();
   const navigate = useNavigate();
+  const { doctors } = useAppContext();
+  const [filterDoc, setFilterDoc] = useState([]);
 
   const applyFilter = () => {
     if (specialty) {

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 const DoctorCard = ({ doctor }) => {
   return (
     <Link
+      onClick={() => scrollTo(0, 0)}
       to={`/appointment/${doctor._id}`}
       className="border border-blue-200 rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500"
     >
