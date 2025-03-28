@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import { assets } from "../assets/assets_frontend/assets";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 const Navbar = () => {
+  const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
   const [token, setToken] = useState(true);
 
   return (
     <nav className="container mx-auto flex justify-between items-center py-5 mb-5 border-b border-b-gray-400 text-sm">
-      <img className="w-44 cursor-pointer" src={assets.logo} alt="" />
+      <img
+        onClick={() => navigate("/")}
+        className="w-44 cursor-pointer"
+        src={assets.logo}
+        alt=""
+      />
       <ul className="hidden md:flex items-center uppercase gap-6 font-medium">
         <li>
           <NavLink to="/">Home</NavLink>

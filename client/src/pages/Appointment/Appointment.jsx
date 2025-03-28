@@ -1,7 +1,7 @@
 import React from "react";
 
 const Appointment = () => {
-  return <div>Appointment</div>;
+  return <section className="min-h-screen">Appointment</section>;
 };
 
 export default Appointment;
