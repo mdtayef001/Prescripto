@@ -6,13 +6,13 @@ import Footer from "../components/Footer";
 const HomeLayout = () => {
   return (
     <>
-      <header>
+      <header className="px-4 sm:px-[10%]">
         <Navbar />
       </header>
-      <main className="container mx-auto ">
+      <main className=" px-4 sm:px-[10%]">
         <Outlet />
       </main>
-      <footer>
+      <footer className=" px-4 sm:px-[10%]">
         <Footer />
       </footer>
     </>

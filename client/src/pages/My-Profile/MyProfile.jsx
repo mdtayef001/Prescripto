@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { assets } from "../../assets/assets_frontend/assets";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 
 const MyProfile = () => {
+  useDocumentTitle("Prescripto | My-Profile");
+
   const [userData, setUserData] = useState({
     name: "Edward Vincent",
     image: assets.profile_pic,
