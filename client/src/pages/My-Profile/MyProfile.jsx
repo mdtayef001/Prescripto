@@ -34,7 +34,7 @@ const MyProfile = () => {
         />
       ) : (
         <p className="font-medium text-3xl text-neutral-800 mt-4">
-          {userData.name}
+          {userData.name} tayef
         </p>
       )}
       <hr className="bg-zinc-300 h-[1px] border-none" />
