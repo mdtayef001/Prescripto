@@ -58,7 +58,7 @@ const Navbar = () => {
       ) : (
         <Link
           className="bg-primary px-8 py-3 rounded-full text-white text-lg cursor-pointer hidden md:block"
-          to={"/register"}
+          to={"/auth"}
         >
           <button className="cursor-pointer">Create account</button>
         </Link>

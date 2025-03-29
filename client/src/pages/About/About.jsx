@@ -1,9 +1,11 @@
 import React from "react";
 import { assets } from "../../assets/assets_frontend/assets";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 
 const About = () => {
+  useDocumentTitle("Prescripto | About");
   return (
-    <section className="min-h-screen">
+    <section>
       <div className="text-center text-2xl pt-10 text-gray-500">
         <p>
           ABOUT <span className="text-primary font-medium">US</span>

@@ -4,6 +4,7 @@ import useAppContext from "../../hooks/useAppContext";
 import { MdVerified } from "react-icons/md";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import RelatedDoctors from "../../components/RelatedDoctors";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 
 const Appointment = () => {
   const { docID } = useParams();
@@ -13,7 +14,7 @@ const Appointment = () => {
   const [slotIndex, setSlotIndex] = useState(0);
   const [slotTime, setSlotTime] = useState("");
   const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-
+  useDocumentTitle("Prescripto | Appointment");
   const fetchDocInfo = async () => {
     const docInfo = doctors.find((doc) => doc._id === docID);
     setDocInfo(docInfo);

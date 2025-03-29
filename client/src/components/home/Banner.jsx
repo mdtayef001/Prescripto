@@ -11,7 +11,7 @@ const Banner = () => {
           <p>Book Appointment</p>
           <p className="mt-4"> With 100+ Trusted Doctors</p>
         </div>
-        <Link to={"/login"}>
+        <Link to={"/auth"}>
           <button
             onClick={() => scrollTo(0, 0)}
             className="bg-white text-gray-600 rounded-full px-8 py-3 text-sm mt-6 hover:scale-105 transition-all duration-300 cursor-pointer"
