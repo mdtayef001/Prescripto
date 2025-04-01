@@ -73,8 +73,6 @@ const Navbar = () => {
         />
       </div>
 
-      {/* <p>menubutton</p> */}
-
       <div
         className={`${
           showMenu ? "fixed w-full" : "h-0 w-0"

@@ -9,6 +9,7 @@ const Doctors = () => {
   const navigate = useNavigate();
   const { doctors } = useAppContext();
   const [filterDoc, setFilterDoc] = useState([]);
+  const [showFilters, setShowFilters] = useState(false);
 
   useDocumentTitle("Prescripto | All Doctors");
 
@@ -29,7 +30,19 @@ const Doctors = () => {
       <section className="min-h-screen">
         <p className="text-gray-600">Browse through the doctors specialist.</p>
         <div className="flex flex-col sm:flex-row items-start gap-5 mt-5">
-          <aside className="flex flex-col gap-4 text-sm text-gray-600">
+          <button
+            className={`py-1 px-3 border rounded text-sm cursor-pointer transition-all sm:hidden ${
+              showFilters ? "bg-primary text-white" : ""
+            }`}
+            onClick={() => setShowFilters((prev) => !prev)}
+          >
+            Filters
+          </button>
+          <aside
+            className={` flex-col gap-4 text-sm text-gray-600 ${
+              showFilters ? "flex" : "hidden sm:hidden"
+            }`}
+          >
             <p
               onClick={() =>
                 specialty === "General physician"

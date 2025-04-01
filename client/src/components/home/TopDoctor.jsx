@@ -8,7 +8,7 @@ const TopDoctor = () => {
   return (
     <section className=" my-16 text-gray-900 md:mx-10 ">
       <h1 className="text-3xl font-medium text-center">Top Doctors to Book</h1>
-      <p className="w-1/3 text-center text-sm mx-auto">
+      <p className="md:w-1/3 text-center text-sm mx-auto">
         Simply browse through our extensive list of trusted doctors.
       </p>
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5  gap-4 gap-y-6 pt-5 px-3 sm:px-0">
