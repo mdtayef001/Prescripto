@@ -8,6 +8,7 @@ import Appointment from "../pages/Appointment/Appointment";
 import About from "../pages/About/About";
 import Contact from "../pages/Contact/Contact";
 import Auth from "../pages/Auth/Auth";
+import AdminLayout from "../Layout/AdminLayout";
 
 const routes = createBrowserRouter([
   {
@@ -48,15 +49,16 @@ const routes = createBrowserRouter([
         element: <MyAppointments />,
       },
       // auth routes
-      // {
-      //   path: "/login",
-      //   element: <Login />,
-      // },
       {
         path: "/auth",
         element: <Auth />,
       },
     ],
+  },
+  // admin routs
+  {
+    path: "/admin",
+    element: <AdminLayout />,
   },
 ]);
 
