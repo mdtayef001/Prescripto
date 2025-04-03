@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import HomeLayout from "../Layout/HomeLayout";
 import Home from "../pages/Home/Home";
 import MyProfile from "../pages/My-Profile/MyProfile";
@@ -9,6 +9,7 @@ import About from "../pages/About/About";
 import Contact from "../pages/Contact/Contact";
 import Auth from "../pages/Auth/Auth";
 import AdminLayout from "../Layout/AdminLayout";
+import { AdminLogin } from "../pages/Admin/AdminLogin";
 
 const routes = createBrowserRouter([
   {
@@ -59,6 +60,13 @@ const routes = createBrowserRouter([
   {
     path: "/admin",
     element: <AdminLayout />,
+    children: [
+      { path: "/admin", element: <Navigate to={"/admin/auth"} /> },
+      {
+        path: "/admin/auth",
+        element: <AdminLogin />,
+      },
+    ],
   },
 ]);
 
