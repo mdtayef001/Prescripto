@@ -1,28 +1,73 @@
-import React from "react";
+import React, { useState } from "react";
 import { assets } from "../../assets/assets_admin/assets";
-
+import useAdminContext from "../../hooks/useAdminContext";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { imgUpload } from "../../hooks/utils";
 const AddDoctor = () => {
-  const handeUpload = (e) => {
+  const [image, setImage] = useState(false);
+  const { severUrl, aToken } = useAdminContext();
+
+  const handleUpload = async (e) => {
     e.preventDefault();
-    const fromData = new FormData(e.target).entries();
-    const data = Object.fromEntries(fromData);
-    console.log(data);
+    const initialData = new FormData(e.target).entries();
+    const data = Object.fromEntries(initialData);
+    const imageURL = await imgUpload(image);
+    const fromData = {
+      imageURL,
+      email: data.email,
+      name: data.name,
+      password: data.password,
+      fees: parseInt(data.fees),
+      experience: data.experience,
+      speciality: data.speciality,
+      degree: data.degree,
+      address: {
+        address1: data.address1,
+        address2: data.address2,
+      },
+      about: data.about,
+    };
+
+    console.log(fromData);
+
+    try {
+      if (!image) return toast.error("Image is not selected");
+      const { data } = await axios.post(
+        `${severUrl}/api/admin/add-doctor`,
+        fromData,
+        { headers: { authorization: `Bearer ${aToken}` } }
+      );
+      console.log(data);
+      if (!data.success) {
+        toast.error(data.message);
+      } else {
+        toast.success(data.message);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
     <section>
-      <form action="" onSubmit={handeUpload} className="m-5 w-full">
+      <form action="" onSubmit={handleUpload} className="m-5 w-full">
         <p className="mb-3 text-lg font-medium">Add Doctor</p>
         <div className="bg-white p-8 border rounded w-full max-w-4xl max-h-[80vh] overflow-y-scroll">
           <div className="flex items-center gap-4 mb-8 text-gray-500">
             <label htmlFor="doc-img">
               <img
                 className="w-16 bg-gray-100 rounded-full cursor-pointer"
-                src={assets.upload_area}
+                src={image ? URL.createObjectURL(image) : assets.upload_area}
                 alt=""
               />
             </label>
-            <input type="file" name="doc-img" id="doc-img" hidden />
+            <input
+              onChange={(e) => setImage(e.target.files[0])}
+              type="file"
+              id="doc-img"
+              hidden
+            />
             <p>
               Upload Doctor <br /> Picture
             </p>
@@ -80,7 +125,7 @@ const AddDoctor = () => {
                 </select>
               </div>
               <div className="w-full space-y-1">
-                <p>Feess</p>
+                <p>Fees</p>
                 <input
                   className="w-full border rounded px-3 py-2"
                   type="number"
@@ -143,6 +188,7 @@ const AddDoctor = () => {
             <textarea
               className="w-full border rounded px-4 py-2"
               placeholder="Write about doctor"
+              name="about"
               rows={5}
               required
             />
