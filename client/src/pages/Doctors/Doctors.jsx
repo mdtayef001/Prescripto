@@ -9,7 +9,7 @@ const Doctors = () => {
   const navigate = useNavigate();
   const { doctors } = useAppContext();
   const [filterDoc, setFilterDoc] = useState([]);
-  const [showFilters, setShowFilters] = useState(false);
+  const [showFilters, setShowFilters] = useState(true);
 
   useDocumentTitle("Prescripto | All Doctors");
 
@@ -39,7 +39,7 @@ const Doctors = () => {
             Filters
           </button>
           <aside
-            className={` flex-col gap-4 text-sm text-gray-600 ${
+            className={`flex-col gap-4 text-sm text-gray-600 ${
               showFilters ? "flex" : "hidden sm:hidden"
             }`}
           >

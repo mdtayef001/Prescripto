@@ -5,7 +5,7 @@ export const AdminContext = createContext();
 const AdminContextProvider = ({ children }) => {
   const [aToken, setAToken] = useState(localStorage.getItem("token") || "");
   const severUrl = import.meta.env.VITE_SERVER_URL;
-  console.log(aToken);
+  console.log("User --> admin");
 
   const adminValue = {
     aToken,

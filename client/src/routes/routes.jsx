@@ -10,6 +10,10 @@ import Contact from "../pages/Contact/Contact";
 import Auth from "../pages/Auth/Auth";
 import AdminLayout from "../Layout/AdminLayout";
 import { AdminLogin } from "../pages/Admin/AdminLogin";
+import Dashboard from "../pages/Admin/Dashboard";
+import AllAppointments from "../pages/Admin/AllAppointments";
+import AddDoctor from "../pages/Admin/AddDoctor";
+import DoctorsList from "../pages/Admin/DoctorsList";
 
 const routes = createBrowserRouter([
   {
@@ -60,6 +64,29 @@ const routes = createBrowserRouter([
   {
     path: "/admin",
     element: <AdminLayout />,
+    children: [
+      {
+        index: true,
+        element: <Dashboard />,
+      },
+      {
+        index: true,
+        path: "/admin/dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "/admin/all-appointments",
+        element: <AllAppointments />,
+      },
+      {
+        path: "/admin/add-doctor",
+        element: <AddDoctor />,
+      },
+      {
+        path: "/admin/doctor-list",
+        element: <DoctorsList />,
+      },
+    ],
   },
 ]);
 

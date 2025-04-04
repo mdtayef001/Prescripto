@@ -2,7 +2,6 @@ import { useState } from "react";
 import useAdminContext from "../../hooks/useAdminContext";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 export const AdminLogin = () => {
   const [state, setState] = useState("Admin");
