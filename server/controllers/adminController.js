@@ -19,19 +19,6 @@ const addDoctor = async (req, res) => {
       imageURL,
     } = req.body;
 
-    console.log({
-      name,
-      email,
-      password,
-      speciality,
-      degree,
-      experience,
-      about,
-      fees,
-      address,
-      imageURL,
-    });
-
     if (
       !name ||
       !email ||
