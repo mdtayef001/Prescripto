@@ -3,11 +3,12 @@ import { createContext, useState } from "react";
 export const AdminContext = createContext();
 
 const AdminContextProvider = ({ children }) => {
-  const [aToke, setAToken] = useState();
+  const [aToken, setAToken] = useState(localStorage.getItem("token") || "");
   const severUrl = import.meta.env.VITE_SERVER_URL;
+  console.log(aToken);
 
   const adminValue = {
-    aToke,
+    aToken,
     setAToken,
     severUrl,
   };

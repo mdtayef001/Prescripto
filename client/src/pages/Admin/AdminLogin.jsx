@@ -1,13 +1,14 @@
 import { useState } from "react";
 import useAdminContext from "../../hooks/useAdminContext";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export const AdminLogin = () => {
   const [state, setState] = useState("Admin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setAToken, severUrl } = useAdminContext();
-
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -16,9 +17,19 @@ export const AdminLogin = () => {
           email,
           password,
         });
+        if (data.success) {
+          localStorage.setItem("token", data?.token);
+          setAToken(data?.token);
+          toast.success("Login Successful");
+        } else {
+          toast.error(data.message);
+        }
       } else {
+        console.log("first");
       }
-    } catch (error) {}
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (

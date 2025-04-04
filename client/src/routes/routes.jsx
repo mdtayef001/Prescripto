@@ -60,13 +60,6 @@ const routes = createBrowserRouter([
   {
     path: "/admin",
     element: <AdminLayout />,
-    children: [
-      { path: "/admin", element: <Navigate to={"/admin/auth"} /> },
-      {
-        path: "/admin/auth",
-        element: <AdminLogin />,
-      },
-    ],
   },
 ]);
 
