@@ -70,7 +70,7 @@ Ensure you have **Node.js** and **npm** installed on your system.
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/your-username/prescripto.git
+   git clone https://github.com/mdtayef001/Prescripto.git
    cd prescripto
    ```
 
