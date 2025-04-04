@@ -1,6 +1,5 @@
 import validator from "validator";
 import bcrypt from "bcrypt";
-import { v2 as cloudinary } from "cloudinary";
 import doctorModel from "../models/doctorModel.js";
 import jwt from "jsonwebtoken";
 
@@ -17,11 +16,10 @@ const addDoctor = async (req, res) => {
       about,
       fees,
       address,
+      imageURL,
     } = req.body;
 
-    const imageFile = req.file;
-
-    console.log(imageFile, {
+    console.log({
       name,
       email,
       password,
@@ -31,16 +29,8 @@ const addDoctor = async (req, res) => {
       about,
       fees,
       address,
+      imageURL,
     });
-
-    // validate the data
-
-    if (!imageFile) {
-      return res.status(400).json({
-        success: false,
-        message: "Image file is required",
-      });
-    }
 
     if (
       !name ||
@@ -51,7 +41,8 @@ const addDoctor = async (req, res) => {
       !experience ||
       !about ||
       !fees ||
-      !address
+      !address ||
+      !imageURL
     ) {
       return res.json({
         success: false,
@@ -79,12 +70,6 @@ const addDoctor = async (req, res) => {
     // hashing doctor password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-
-    // upload image to cloudinary
-    const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
-      resource_type: "image",
-    });
-    const imageURL = imageUpload.secure_url;
 
     const doctorData = {
       name,

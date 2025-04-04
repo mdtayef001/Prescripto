@@ -10,14 +10,9 @@ const imgUpload = async (imageData) => {
   try {
     const { data } = await axios.post(
       `https://api.cloudinary.com/v1_1/${
-        import.meta.VITE_cloudinary_CLOUD_NAME
+        import.meta.env.VITE_cloudinary_CLOUD_NAME
       }/image/upload`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
+      formData
     );
     return data.url;
   } catch (error) {

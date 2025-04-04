@@ -22,14 +22,12 @@ const AddDoctor = () => {
       experience: data.experience,
       speciality: data.speciality,
       degree: data.degree,
-      address: {
+      address: JSON.stringify({
         address1: data.address1,
         address2: data.address2,
-      },
+      }),
       about: data.about,
     };
-
-    console.log(fromData);
 
     try {
       if (!image) return toast.error("Image is not selected");
@@ -43,6 +41,7 @@ const AddDoctor = () => {
         toast.error(data.message);
       } else {
         toast.success(data.message);
+        fromData.reset();
       }
     } catch (error) {
       console.log(error.message);
