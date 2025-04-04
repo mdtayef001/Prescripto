@@ -93,20 +93,6 @@ Create a `.env` file in the root directory and add necessary environment variabl
 REACT_APP_API_URL=your_api_endpoint
 ```
 
-## Folder Structure
-
-```
-/src
-  ├── components     # Reusable UI components
-  ├── pages          # Different pages (Login, Dashboard, Profile, etc.)
-  ├── services       # API calls using Axios
-  ├── context        # TanStack Query setup
-  ├── routes         # React Router setup
-  ├── assets         # Images, icons, etc.
-  ├── App.js         # Main App component
-  ├── index.js       # Entry point
-```
-
 ## Live Demo
 
 [Prescripto](https://prescripto-c3bfc.web.app/) 🚀
