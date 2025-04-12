@@ -18,7 +18,7 @@ createRoot(document.getElementById("root")).render(
         <AppContextProvider>
           <QueryClientProvider client={queryClient}>
             <RouterProvider router={routes} />
-            <ToastContainer autoClose={2000} />
+            <ToastContainer autoClose={2000} position="top-center" />
           </QueryClientProvider>
         </AppContextProvider>
       </DoctorContextProvider>

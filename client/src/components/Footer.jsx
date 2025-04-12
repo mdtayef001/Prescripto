@@ -70,7 +70,7 @@ const Footer = () => {
       <div>
         <hr />
         <p className="text-center text-sm py-5 ">
-          Copyright {new Date().getFullYear()} @ Prescripto - All Right
+          Copyright {new Date().getFullYear()} @ Prescripto - All Rights
           Reserved.
         </p>
       </div>

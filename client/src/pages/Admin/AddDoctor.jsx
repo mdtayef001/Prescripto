@@ -4,9 +4,11 @@ import useAdminContext from "../../hooks/useAdminContext";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { imgUpload } from "../../hooks/utils";
+import { VscLoading } from "react-icons/vsc";
 const AddDoctor = () => {
   const [image, setImage] = useState(false);
   const { severUrl, aToken } = useAdminContext();
+  const [adding, setAdding] = useState(false);
 
   const handleUpload = async (e) => {
     e.preventDefault();
@@ -36,23 +38,27 @@ const AddDoctor = () => {
         fromData,
         { headers: { authorization: `Bearer ${aToken}` } }
       );
-      console.log(data);
+
       if (!data.success) {
         toast.error(data.message);
       } else {
         toast.success(data.message);
-        fromData.reset();
+        e.target.reset();
+        setImage(false);
       }
     } catch (error) {
-      console.log(error.message);
+      toast.error(error.message);
+      console.log(error);
+    } finally {
+      setAdding(false);
     }
   };
 
   return (
     <section>
-      <form action="" onSubmit={handleUpload} className="m-5 w-full">
+      <form onSubmit={handleUpload} className="m-5 w-full">
         <p className="mb-3 text-lg font-medium">Add Doctor</p>
-        <div className="bg-white p-8 border rounded w-full max-w-4xl max-h-[80vh] overflow-y-scroll">
+        <div className="bg-white p-8 border rounded w-full max-w-4xl max-h-full ">
           <div className="flex items-center gap-4 mb-8 text-gray-500">
             <label htmlFor="doc-img">
               <img
@@ -192,8 +198,18 @@ const AddDoctor = () => {
               required
             />
           </div>
-          <button className="bg-primary text-white px-10 py-3 mt-4 rounded-full">
+          <button
+            onClick={() => setAdding(true)}
+            className="bg-primary text-white px-10 py-3 mt-4 rounded-full cursor-pointer flex items-center gap-2"
+          >
             Add Doctor
+            {adding ? (
+              <span>
+                <VscLoading className="animate-spin" />
+              </span>
+            ) : (
+              ""
+            )}
           </button>
         </div>
       </form>
