@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { assets } from "../../assets/assets_admin/assets";
 import useAdminContext from "../../hooks/useAdminContext";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { imgUpload } from "../../hooks/utils";
 import { VscLoading } from "react-icons/vsc";
 const AddDoctor = () => {
   const [image, setImage] = useState(false);
-  const { severUrl, aToken } = useAdminContext();
+  const { axiosSecure } = useAdminContext();
   const [adding, setAdding] = useState(false);
 
   const handleUpload = async (e) => {
@@ -25,18 +24,18 @@ const AddDoctor = () => {
       speciality: data.speciality,
       degree: data.degree,
       address: JSON.stringify({
-        address1: data.address1,
-        address2: data.address2,
+        line1: data.address1,
+        line2: data.address2,
       }),
       about: data.about,
     };
-
+    console.log(fromData);
     try {
       if (!image) return toast.error("Image is not selected");
-      const { data } = await axios.post(
-        `${severUrl}/api/admin/add-doctor`,
-        fromData,
-        { headers: { authorization: `Bearer ${aToken}` } }
+
+      const { data } = await axiosSecure.post(
+        `/api/admin/add-doctor`,
+        fromData
       );
 
       if (!data.success) {

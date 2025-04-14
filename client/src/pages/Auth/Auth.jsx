@@ -1,17 +1,63 @@
 import React, { useState } from "react";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
+import useAppContext from "../../hooks/useAppContext";
+import { toast } from "react-toastify";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Auth = () => {
   useDocumentTitle("Appointment | Auth");
-
+  const { token, setToken, axiosPublic } = useAppContext();
   const [state, setState] = useState("Sign Up");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      // sign up
+      if (state === "Sign Up") {
+        // req to the sign up api
+        const { data } = await axiosPublic.post("/api/user/register", {
+          name,
+          email,
+          password,
+        });
+        // if the sign up is successful
+        if (data.success) {
+          setToken(data.token);
+          localStorage.setItem("token", data.token);
+          toast.success("Account Created Successfully");
+          navigate("/");
+        } else {
+          toast.error(data.message);
+        }
+        // login
+      } else {
+        // req to the login api
+        const { data } = await axiosPublic.post("/api/user/login", {
+          email,
+          password,
+        });
+        //if the login is successful
+        if (data.success) {
+          setToken(data.token);
+          localStorage.setItem("token", data.token);
+          toast.success("Login Successfully");
+          navigate("/");
+        } else {
+          toast.error(data.message);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
   };
-  return (
+  return token ? (
+    <Navigate to="/" replace={true} />
+  ) : (
     <section className="min-h-screen">
       <form
         onSubmit={handleSubmit}
@@ -59,11 +105,11 @@ const Auth = () => {
             />
           </div>
           {state === "Sign Up" ? (
-            <button className="bg-primary text-white w-full py-2 rounded-md text-base">
+            <button className="bg-primary text-white w-full py-2 rounded-md text-base cursor-pointer">
               Create Account
             </button>
           ) : (
-            <button className="bg-primary text-white w-full py-2 rounded-md text-base">
+            <button className="bg-primary text-white w-full py-2 rounded-md text-base cursor-pointer">
               Login
             </button>
           )}

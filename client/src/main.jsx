@@ -13,15 +13,15 @@ const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <AdminContextProvider>
-      <DoctorContextProvider>
-        <AppContextProvider>
-          <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <AdminContextProvider>
+        <DoctorContextProvider>
+          <AppContextProvider>
             <RouterProvider router={routes} />
             <ToastContainer autoClose={2000} position="top-center" />
-          </QueryClientProvider>
-        </AppContextProvider>
-      </DoctorContextProvider>
-    </AdminContextProvider>
+          </AppContextProvider>
+        </DoctorContextProvider>
+      </AdminContextProvider>
+    </QueryClientProvider>
   </StrictMode>
 );

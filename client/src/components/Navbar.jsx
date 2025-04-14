@@ -3,10 +3,16 @@ import { assets } from "../assets/assets_frontend/assets";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AiOutlineMenu } from "react-icons/ai";
 import { RxCross2 } from "react-icons/rx";
+import useAppContext from "../hooks/useAppContext";
 const Navbar = () => {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
-  const [token, setToken] = useState(true);
+  const { token, setToken } = useAppContext();
+
+  const logOut = () => {
+    setToken(false);
+    localStorage.removeItem("token");
+  };
 
   return (
     <nav className="flex items-center justify-between py-5 mb-5 border-b border-b-gray-400 text-sm ">
@@ -53,7 +59,7 @@ const Navbar = () => {
                 My Appointment
               </Link>
               <p
-                onClick={() => setToken(false)}
+                onClick={() => logOut()}
                 className="hover:text-black cursor-pointer"
               >
                 Logout

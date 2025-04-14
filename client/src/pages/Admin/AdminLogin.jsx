@@ -17,7 +17,7 @@ export const AdminLogin = () => {
           password,
         });
         if (data.success) {
-          localStorage.setItem("token", data?.token);
+          localStorage.setItem("atoken", data?.token);
           setAToken(data?.token);
           toast.success("Login Successful");
         } else {

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets_admin/assets.js";
 import useAdminContext from "../../hooks/useAdminContext";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const { aToken, setAToken } = useAdminContext();
@@ -8,8 +9,9 @@ const Navbar = () => {
 
   const handleLogout = () => {
     aToken && setAToken("");
-    aToken && localStorage.removeItem("token");
+    aToken && localStorage.removeItem("atoken");
     navigate("/");
+    toast.success("Logout Successfully");
   };
 
   return (
