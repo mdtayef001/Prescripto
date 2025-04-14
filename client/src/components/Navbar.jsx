@@ -7,7 +7,7 @@ import useAppContext from "../hooks/useAppContext";
 const Navbar = () => {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
-  const { token, setToken } = useAppContext();
+  const { token, setToken, user } = useAppContext();
 
   const logOut = () => {
     setToken(false);
@@ -38,7 +38,7 @@ const Navbar = () => {
       </ul>
       {token ? (
         <div className="hidden md:flex  items-center gap-2 cursor-pointer group relative">
-          <img className="w-10 rounded-full" src={assets.profile_pic} alt="" />
+          <img className="w-10 rounded-full" src={user.image} alt="" />
           <img
             className="w-2.5 hidden md:block"
             src={assets.dropdown_icon}

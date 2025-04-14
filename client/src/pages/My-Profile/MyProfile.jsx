@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { assets } from "../../assets/assets_frontend/assets";
 import { VscLoading } from "react-icons/vsc";
 import { imgUpload } from "../../hooks/utils";
+import { Navigate } from "react-router-dom";
 
 const MyProfile = () => {
   useDocumentTitle("Prescripto | My-Profile");
@@ -51,6 +52,8 @@ const MyProfile = () => {
       setAdding(false);
     }
   };
+
+  if (!userData) return <Navigate to={"/auth"} />;
 
   return userDataLoading ? (
     <p>Loading....</p>
