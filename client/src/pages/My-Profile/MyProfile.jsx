@@ -1,28 +1,86 @@
 import { useState } from "react";
-import { assets } from "../../assets/assets_frontend/assets";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
+import useAppContext from "../../hooks/useAppContext";
+import { toast } from "react-toastify";
+import { assets } from "../../assets/assets_frontend/assets";
+import { VscLoading } from "react-icons/vsc";
+import { imgUpload } from "../../hooks/utils";
 
 const MyProfile = () => {
   useDocumentTitle("Prescripto | My-Profile");
-
-  const [userData, setUserData] = useState({
-    name: "Edward Vincent",
-    image: assets.profile_pic,
-    email: "info@gmail.com",
-    phone: "12321213",
-    address: {
-      line1: "57th Cross, Richmond ",
-      line2: "57th Cross, Richmond ",
-    },
-    gender: "Male",
-    dob: "2000-01-20",
-  });
+  const { userData, setUserData, userDataLoading, axiosUser, userRefetch } =
+    useAppContext();
 
   const [isEdit, setIsEdit] = useState(false);
+  const [image, setImage] = useState(false);
+  const [adding, setAdding] = useState(false);
 
-  return (
+  const handleUpdate = async () => {
+    // updating image to cloudinary
+    const imageURL = image ? await imgUpload(image) : userData.image;
+    setAdding(true);
+    const fromData = {
+      imageURL,
+      name: userData.name,
+      address: JSON.stringify({
+        line1: userData.address.line1,
+        line2: userData.address.line2,
+      }),
+      gender: userData.gender,
+      phone: userData.phone,
+      dob: userData.dob,
+    };
+
+    try {
+      // set data to server
+      const { data } = await axiosUser.post(
+        "/api/user/update-profile",
+        fromData
+      );
+      if (data.success) {
+        toast.success(data.message);
+        userRefetch();
+        setIsEdit(false);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    } finally {
+      setAdding(false);
+    }
+  };
+
+  return userDataLoading ? (
+    <p>Loading....</p>
+  ) : (
     <section className=" max-w-lg  flex flex-col gap-2 text-sm">
-      <img className="w-36 rounded  " src={userData.image} alt="" />
+      {isEdit ? (
+        <label htmlFor="image">
+          <div className="inline-block relative cursor-pointer">
+            <img
+              className="w-36 rounded opacity-75"
+              src={image ? URL.createObjectURL(image) : userData.image}
+              alt=""
+            />
+            <img
+              className="w-10 absolute bottom-12 right-12"
+              src={image ? "" : assets.upload_icon}
+              alt=""
+            />
+          </div>
+          <input
+            onChange={(e) => setImage(e.target.files[0])}
+            type="file"
+            id="image"
+            hidden
+          />
+        </label>
+      ) : (
+        <img className="w-36 rounded  " src={userData.image} alt="" />
+      )}
+
       {isEdit ? (
         <input
           className="bg-gray-100 text-3xl font-medium max-w-60 mt-4 p-1 rounded"
@@ -128,10 +186,17 @@ const MyProfile = () => {
       <div className="mt-10">
         {isEdit ? (
           <button
-            className="border border-primary px-8 py-2 rounded-full cursor-pointer hover:bg-primary hover:text-white transition-all duration-300"
-            onClick={() => setIsEdit(false)}
+            className="border border-primary px-8 py-2 rounded-full cursor-pointer hover:bg-primary hover:text-white transition-all duration-300  flex items-center gap-2"
+            onClick={handleUpdate}
           >
-            Save Information
+            Save Information{" "}
+            {adding ? (
+              <span>
+                <VscLoading className="animate-spin" />
+              </span>
+            ) : (
+              ""
+            )}
           </button>
         ) : (
           <button

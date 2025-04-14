@@ -105,7 +105,6 @@ const loginUser = async (req, res) => {
 const getUserDetails = async (req, res) => {
   try {
     const { id } = req.decoded;
-    console.log(req.body);
     const userData = await userModel.findById(id).select("-password");
     res.status(200).json({
       success: true,
@@ -127,7 +126,6 @@ const updateProfile = async (req, res) => {
     const upDatedData = req.body;
     const { id } = req.decoded;
     const { name, address, gender, dob, phone, imageURL } = upDatedData;
-    console.log(upDatedData, id);
 
     if (!name || !gender || !dob || !phone) {
       res.status(400).json({

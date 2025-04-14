@@ -18,7 +18,6 @@ const addDoctor = async (req, res) => {
       address,
       imageURL,
     } = req.body;
-    console.log(req.body);
     if (
       !name ||
       !email ||
