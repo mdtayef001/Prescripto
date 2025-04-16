@@ -2,12 +2,17 @@ import useDocumentTitle from "../../hooks/useDocumentTitle";
 import useAppContext from "../../hooks/useAppContext";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const MyAppointments = () => {
   useDocumentTitle("Prescripto | My Appointments");
+  const navigate = useNavigate();
   const { axiosUser, token } = useAppContext();
-
-  const { data: appointments = [], isLoading } = useQuery({
+  const {
+    data: appointments = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["my-appointments"],
     enabled: !!token,
     queryFn: async () => {
@@ -23,8 +28,30 @@ const MyAppointments = () => {
     },
   });
 
+  const handleCancelAppointment = async (id) => {
+    try {
+      const { data } = await axiosUser.post(
+        `/api/user/cancel-appointment/${id}`
+      );
+      if (data.success) {
+        toast.success(data.message);
+        // refetch the appointments
+        refetch();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
+  };
+
+  if (!token) return navigate("/auth");
+
   return isLoading ? (
-    <p>Loading....</p>
+    <div lassName="min-h-screen">
+      <p>Loading....</p>
+    </div>
   ) : (
     <section className="min-h-screen">
       <p className="pb-3 mt-12 font-medium text-zinc-700 border-b">
@@ -60,12 +87,26 @@ const MyAppointments = () => {
             </div>
             <div></div>
             <div className="flex flex-col gap-2 justify-end">
-              <button className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300 cursor-pointer">
-                Pay Online
-              </button>
-              <button className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300 cursor-pointer">
-                Cancel Appointment
-              </button>
+              {!item.canaled ? (
+                <>
+                  <button className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300 cursor-pointer">
+                    Pay Online
+                  </button>
+                  <button
+                    onClick={() => handleCancelAppointment(item._id)}
+                    className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300 cursor-pointer"
+                  >
+                    Cancel Appointment
+                  </button>
+                </>
+              ) : (
+                <button
+                  className="text-sm text-red-600 text-center sm:min-w-48 py-2 border border-red-500 rounded  "
+                  disabled={true}
+                >
+                  Appointment Canalled
+                </button>
+              )}
             </div>
           </div>
         ))}

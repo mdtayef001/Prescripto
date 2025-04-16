@@ -34,6 +34,39 @@ const AdminContextProvider = ({ children }) => {
     },
   });
 
+  // get all appointments
+  const {
+    data: appointments = [],
+    isLoading: loadingAppointments,
+    refetch: refetchAppointments,
+  } = useQuery({
+    queryKey: ["all-appointments", "admin"],
+    enabled: !!aToken,
+    queryFn: async () => {
+      try {
+        const { data } = await axiosSecure.get(`/api/admin/appointments`);
+        if (data.success) {
+          return data.appointments;
+        } else {
+          toast.error(data.message);
+        }
+      } catch (error) {
+        toast.error(error.response.data.message);
+        console.log(error);
+      }
+    },
+  });
+
+  const calculateAge = (dob) => {
+    const [year, month, day] = dob.split("-").map(Number);
+    const birthday = new Date(year, month - 1, day);
+    const today = new Date();
+
+    let age = today.getFullYear() - birthday.getFullYear();
+
+    return age;
+  };
+
   const adminValue = {
     aToken,
     setAToken,
@@ -42,6 +75,10 @@ const AdminContextProvider = ({ children }) => {
     loadingDoctors,
     refetchDoctors,
     axiosSecure,
+    appointments,
+    loadingAppointments,
+    refetchAppointments,
+    calculateAge,
   };
   return (
     <AdminContext.Provider value={adminValue}>{children}</AdminContext.Provider>

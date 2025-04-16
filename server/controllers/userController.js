@@ -1,9 +1,10 @@
 import validator from "validator";
-import bcrypt from "bcrypt";
+import bcrypt, { compareSync } from "bcrypt";
 import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import doctorModel from "../models/doctorModel.js";
 import appointmentModel from "../models/appointmentModel.js";
+import { response } from "express";
 
 // api to register a user
 const registerUser = async (req, res) => {
@@ -238,6 +239,49 @@ const userAppointments = async (req, res) => {
   }
 };
 
+// api to cancel appointment
+const cancelAppointment = async (req, res) => {
+  try {
+    const appointmentID = req.params.id;
+    const { id: userID } = req.decoded;
+    const appointment = await appointmentModel.findById(appointmentID);
+
+    if (appointment.userID !== userID) {
+      return res.status(400).json({
+        success: false,
+        message: "Unauthorized Action",
+      });
+    }
+
+    await appointmentModel.findByIdAndUpdate(appointmentID, {
+      canaled: true,
+    });
+
+    // update the slots_booked in doctor model
+    const { docID, slotDate, slotTime } = appointment;
+    const docData = await doctorModel.findById(docID);
+    let slots_booked = docData.slots_booked;
+    // remove the slot from slots_booked
+    slots_booked[slotDate] = slots_booked[slotDate].filter(
+      (slot) => slot !== slotTime
+    );
+    await doctorModel.findByIdAndUpdate(docID, {
+      slots_booked,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Appointment Cancelled",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 export {
   registerUser,
   loginUser,
@@ -245,4 +289,5 @@ export {
   updateProfile,
   bookAppointment,
   userAppointments,
+  cancelAppointment,
 };
