@@ -13,7 +13,11 @@ const AppContextProvider = ({ children }) => {
   const [userData, setUserData] = useState(false);
 
   // Fetching doctors data
-  const { data: doctors = [] } = useQuery({
+  const {
+    data: doctors = [],
+    refetch: doctorRefetch,
+    isLoading: doctorDataLoading,
+  } = useQuery({
     queryKey: ["doctors"],
     queryFn: async () => {
       try {
@@ -55,16 +59,18 @@ const AppContextProvider = ({ children }) => {
   });
 
   const value = {
-    doctors,
     token,
     setToken,
-    axiosPublic,
+    user,
     userData,
+    doctors,
     setUserData,
     userDataLoading,
-    user,
-    axiosUser,
+    doctorDataLoading,
     userRefetch,
+    doctorRefetch,
+    axiosUser,
+    axiosPublic,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

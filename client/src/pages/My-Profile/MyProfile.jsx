@@ -9,8 +9,14 @@ import { Navigate } from "react-router-dom";
 
 const MyProfile = () => {
   useDocumentTitle("Prescripto | My-Profile");
-  const { userData, setUserData, userDataLoading, axiosUser, userRefetch } =
-    useAppContext();
+  const {
+    userData,
+    setUserData,
+    userDataLoading,
+    axiosUser,
+    userRefetch,
+    token,
+  } = useAppContext();
 
   const [isEdit, setIsEdit] = useState(false);
   const [image, setImage] = useState(false);
@@ -33,7 +39,7 @@ const MyProfile = () => {
     };
 
     try {
-      // set data to server
+      // send data to server
       const { data } = await axiosUser.post(
         "/api/user/update-profile",
         fromData
@@ -53,7 +59,7 @@ const MyProfile = () => {
     }
   };
 
-  if (!userData) return <Navigate to={"/auth"} />;
+  if (!token) return <Navigate to={"/auth"} />;
 
   return userDataLoading ? (
     <p>Loading....</p>
@@ -146,9 +152,9 @@ const MyProfile = () => {
             </p>
           ) : (
             <p className="text-gray-500">
-              {userData.address.line1}
+              {userData?.address?.line1}
               <br />
-              {userData.address.line2}
+              {userData?.address?.line2}
             </p>
           )}
         </div>

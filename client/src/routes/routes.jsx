@@ -9,7 +9,6 @@ import About from "../pages/About/About";
 import Contact from "../pages/Contact/Contact";
 import Auth from "../pages/Auth/Auth";
 import AdminLayout from "../Layout/AdminLayout";
-import { AdminLogin } from "../pages/Admin/AdminLogin";
 import Dashboard from "../pages/Admin/Dashboard";
 import AllAppointments from "../pages/Admin/AllAppointments";
 import AddDoctor from "../pages/Admin/AddDoctor";

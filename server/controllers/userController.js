@@ -2,6 +2,8 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
+import doctorModel from "../models/doctorModel.js";
+import appointmentModel from "../models/appointmentModel.js";
 
 // api to register a user
 const registerUser = async (req, res) => {
@@ -153,4 +155,94 @@ const updateProfile = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser, getUserDetails, updateProfile };
+// api to book appointment
+const bookAppointment = async (req, res) => {
+  try {
+    const { id } = req.decoded;
+    const { docID, slotDate, slotTime } = req.body;
+    const docData = await doctorModel.findById(docID).select("-password");
+    if (!docData.available) {
+      return res.status(400).json({
+        success: false,
+        message: "Doctor is not available",
+      });
+    }
+
+    let slots_booked = docData.slots_booked;
+
+    // checking if the slot is available
+    if (slots_booked[slotDate]) {
+      if (slots_booked[slotDate].includes(slotTime)) {
+        return res.status(400).json({
+          success: false,
+          message: "Slot is not available",
+        });
+      } else {
+        slots_booked[slotDate].push(slotTime);
+      }
+    } else {
+      slots_booked[slotDate] = [];
+      slots_booked[slotDate].push(slotTime);
+    }
+
+    const userData = await userModel.findById(id).select("-password");
+    delete docData.slots_booked;
+
+    const appointmentData = {
+      userID: id,
+      docID,
+      slotDate,
+      slotTime,
+      userData,
+      docData,
+      amount: docData.fees,
+      date: Date.now(),
+    };
+
+    const newAppointment = new appointmentModel(appointmentData);
+    await newAppointment.save();
+
+    // save new slot data in docData
+    await doctorModel.findByIdAndUpdate(docID, {
+      slots_booked,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Appointment Booked",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// api to get all appointments of a user
+const userAppointments = async (req, res) => {
+  try {
+    const { id } = req.decoded;
+    const appointmentsData = await appointmentModel.find({ userID: id });
+    res.status(200).json({
+      success: true,
+      appointmentsData,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export {
+  registerUser,
+  loginUser,
+  getUserDetails,
+  updateProfile,
+  bookAppointment,
+  userAppointments,
+};

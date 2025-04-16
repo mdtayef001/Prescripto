@@ -1,20 +1,28 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useAppContext from "../../hooks/useAppContext";
 import { MdVerified } from "react-icons/md";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import RelatedDoctors from "../../components/RelatedDoctors";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
+import { toast } from "react-toastify";
+import { VscLoading } from "react-icons/vsc";
 
 const Appointment = () => {
   const { docID } = useParams();
-  const { doctors } = useAppContext();
+  const { doctors, token, axiosUser, doctorDataLoading, doctorRefetch } =
+    useAppContext();
   const [docInfo, setDocInfo] = useState(null);
   const [docSlots, setDocSlots] = useState([]);
   const [slotIndex, setSlotIndex] = useState(0);
   const [slotTime, setSlotTime] = useState("");
+  const [adding, setAdding] = useState(false);
   const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  const navigate = useNavigate();
+
+  // set document title
   useDocumentTitle("Prescripto | Appointment");
+
   const fetchDocInfo = async () => {
     const docInfo = doctors.find((doc) => doc._id === docID);
     setDocInfo(docInfo);
@@ -49,14 +57,62 @@ const Appointment = () => {
           hour: "2-digit",
           minute: "2-digit",
         });
-        timeSlots.push({
-          dateTime: new Date(currentDate),
-          time: formattedTime,
-        });
+
+        let day = currentDate.getDay();
+        let month = currentDate.getMonth() + 1;
+        let year = currentDate.getFullYear();
+
+        let slotDate = `${day}-${month}-${year}`;
+        const slotTime = `${formattedTime}`;
+
+        const isSlotAvailable =
+          docInfo.slots_booked[slotDate] &&
+          docInfo.slots_booked[slotDate].includes(slotTime)
+            ? false
+            : true;
+        if (isSlotAvailable) {
+          timeSlots.push({
+            dateTime: new Date(currentDate),
+            time: formattedTime,
+          });
+        }
+
         currentDate.setMinutes(currentDate.getMinutes() + 30);
       }
 
       setDocSlots((prev) => [...prev, timeSlots]);
+    }
+  };
+
+  const bookAppointment = async () => {
+    if (!token) {
+      toast.warning("Login to book an appointment");
+      return navigate("/auth");
+    }
+    setAdding(true);
+    try {
+      const date = docSlots[slotIndex][0].dateTime;
+      let day = date.getDate();
+      let month = date.getMonth() + 1;
+      let year = date.getFullYear();
+      let slotDate = `${day}-${month}-${year}`;
+
+      const { data } = await axiosUser.post("/api/user/book-appointment", {
+        docID,
+        slotDate,
+        slotTime,
+      });
+
+      if (data.success) {
+        toast.success(data.message);
+        doctorRefetch();
+        navigate("/my-appointments");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    } finally {
+      setAdding(false);
     }
   };
 
@@ -68,7 +124,8 @@ const Appointment = () => {
     getAvailableSlots();
   }, [docInfo]);
 
-  if (!docInfo) return <section className="min-h-screen">Loading...</section>;
+  if (!docInfo || doctorDataLoading)
+    return <section className="min-h-screen">Loading...</section>;
 
   return (
     <section className="min-h-screen">
@@ -148,8 +205,18 @@ const Appointment = () => {
               </button>
             ))}
         </div>
-        <button className="bg-primary px-14 py-3 rounded-full text-white text-sm font-light cursor-pointer my-6">
-          Book an appointment
+        <button
+          onClick={bookAppointment}
+          className="bg-primary px-14 py-3 rounded-full text-white text-sm font-light cursor-pointer my-6 flex items-center gap-2 "
+        >
+          Book an appointment{" "}
+          {adding ? (
+            <span>
+              <VscLoading className="animate-spin" />
+            </span>
+          ) : (
+            ""
+          )}
         </button>
       </div>
 
