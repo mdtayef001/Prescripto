@@ -16,7 +16,7 @@ const AdminContextProvider = ({ children }) => {
     isLoading: loadingDoctors,
     refetch: refetchDoctors,
   } = useQuery({
-    queryKey: ["all-doctors", "admin"],
+    queryKey: ["all-doctors"],
     enabled: !!aToken, // only run the query if aToken is available
     queryFn: async () => {
       try {
@@ -40,13 +40,37 @@ const AdminContextProvider = ({ children }) => {
     isLoading: loadingAppointments,
     refetch: refetchAppointments,
   } = useQuery({
-    queryKey: ["all-appointments", "admin"],
+    queryKey: ["all-appointments"],
     enabled: !!aToken,
     queryFn: async () => {
       try {
         const { data } = await axiosSecure.get(`/api/admin/appointments`);
         if (data.success) {
           return data.appointments;
+        } else {
+          toast.error(data.message);
+        }
+      } catch (error) {
+        toast.error(error.response.data.message);
+        console.log(error);
+      }
+    },
+  });
+
+  // fetch dashboard data
+
+  const {
+    data: dashData = {},
+    isLoading: loadingDashData,
+    refetch: refetchDashData,
+  } = useQuery({
+    queryKey: ["dashboard-data"],
+    enabled: !!aToken,
+    queryFn: async () => {
+      try {
+        const { data } = await axiosSecure.get(`/api/admin/dashboard`);
+        if (data.success) {
+          return data.dashData;
         } else {
           toast.error(data.message);
         }
@@ -79,6 +103,9 @@ const AdminContextProvider = ({ children }) => {
     loadingAppointments,
     refetchAppointments,
     calculateAge,
+    dashData,
+    loadingDashData,
+    refetchDashData,
   };
   return (
     <AdminContext.Provider value={adminValue}>{children}</AdminContext.Provider>

@@ -1,25 +1,23 @@
-import React from "react";
-import useAdminContext from "../../hooks/useAdminContext";
-import { useNavigate } from "react-router-dom";
-import { assets } from "../../assets/assets_admin/assets";
 import { MdOutlineCancel } from "react-icons/md";
+import { assets } from "../../assets/assets_admin/assets";
+import UseDoctorContext from "../../hooks/UseDoctorContext";
+import { FaCheck } from "react-icons/fa6";
 
-const Dashboard = () => {
-  const { dashData, loadingDashData, aToken } = useAdminContext();
-  const navigate = useNavigate();
-  if (!aToken) return navigate("/auth");
-  return loadingDashData ? (
+const DoctorDashboard = () => {
+  const { dashData, dashDataLoading } = UseDoctorContext();
+
+  return dashDataLoading ? (
     <p>Loading....</p>
   ) : (
     <section className="m-5">
       <div className="flex flex-wrap gap-3">
         <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all duration-200">
-          <img className="w-14" src={assets.doctor_icon} alt="" />
+          <img className="w-14" src={assets.earning_icon} alt="" />
           <div>
             <p className="text-xl font-semibold text-gray-600">
-              {dashData.doctors}
+              $ {dashData.earnings}
             </p>
-            <p className="text-gray-400 ">Doctors</p>
+            <p className="text-gray-400 ">Earings</p>
           </div>
         </div>
         <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all duration-200">
@@ -54,11 +52,13 @@ const Dashboard = () => {
             >
               <img
                 className="rounded-full w-10"
-                src={item.docData.image}
+                src={item.userData.image}
                 alt=""
               />
               <div className="flex-1 text-sm">
-                <p className="text-gray-800 font-medium">{item.docData.name}</p>
+                <p className="text-gray-800 font-medium">
+                  {item.userData.name}
+                </p>
                 <p className="text-gray-600 ">{item.slotDate}</p>
               </div>
               {item.canaled ? (
@@ -76,4 +76,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DoctorDashboard;

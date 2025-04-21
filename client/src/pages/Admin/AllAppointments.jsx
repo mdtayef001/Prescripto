@@ -76,11 +76,15 @@ const AllAppointments = () => {
             <p>${item.docData.fees}</p>
             {item.canaled ? (
               <p className="text-red-400 text-xs font-medium">Cancelled</p>
+            ) : item.isCompleted ? (
+              <p className="text-green-400 text-xs font-medium">Completed</p>
             ) : (
-              <MdOutlineCancel
-                onClick={() => handleCancelAppointment(item._id)}
-                className="text-3xl text-red-500 cursor-pointer active:text-red-700"
-              />
+              <div className="flex gap-2">
+                <MdOutlineCancel
+                  onClick={() => handleCancelAppointment(item._id)}
+                  className="text-3xl cursor-pointer text-red-400 "
+                />
+              </div>
             )}
           </div>
         ))}

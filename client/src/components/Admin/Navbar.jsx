@@ -2,15 +2,19 @@ import { useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets_admin/assets.js";
 import useAdminContext from "../../hooks/useAdminContext";
 import { toast } from "react-toastify";
+import UseDoctorContext from "../../hooks/UseDoctorContext.jsx";
 
 const Navbar = () => {
   const { aToken, setAToken } = useAdminContext();
+  const { dToken, setDToken } = UseDoctorContext();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     aToken && setAToken("");
     aToken && localStorage.removeItem("atoken");
-    navigate("/");
+    dToken && setDToken("");
+    dToken && localStorage.removeItem("dtoken");
+    navigate("/admin");
     toast.success("Logout Successfully");
   };
 

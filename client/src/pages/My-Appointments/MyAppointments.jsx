@@ -6,7 +6,9 @@ import { useNavigate } from "react-router-dom";
 
 const MyAppointments = () => {
   useDocumentTitle("Prescripto | My Appointments");
+
   const navigate = useNavigate();
+
   const { axiosUser, token } = useAppContext();
   const {
     data: appointments = [],
@@ -49,7 +51,7 @@ const MyAppointments = () => {
   if (!token) return navigate("/auth");
 
   return isLoading ? (
-    <div lassName="min-h-screen">
+    <div className="min-h-screen">
       <p>Loading....</p>
     </div>
   ) : (
@@ -87,7 +89,23 @@ const MyAppointments = () => {
             </div>
             <div></div>
             <div className="flex flex-col gap-2 justify-end">
-              {!item.canaled ? (
+              {item.canaled ? (
+                <>
+                  <button
+                    className="text-sm text-red-600 text-center sm:min-w-48 py-2 border border-red-500 rounded  "
+                    disabled={true}
+                  >
+                    Appointment Canalled
+                  </button>
+                </>
+              ) : item.isCompleted ? (
+                <button
+                  className="text-sm text-green-600 text-center sm:min-w-48 py-2 border border-green-500 rounded  "
+                  disabled={true}
+                >
+                  Appointment Completed
+                </button>
+              ) : (
                 <>
                   <button className="text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300 cursor-pointer">
                     Pay Online
@@ -99,13 +117,6 @@ const MyAppointments = () => {
                     Cancel Appointment
                   </button>
                 </>
-              ) : (
-                <button
-                  className="text-sm text-red-600 text-center sm:min-w-48 py-2 border border-red-500 rounded  "
-                  disabled={true}
-                >
-                  Appointment Canalled
-                </button>
               )}
             </div>
           </div>

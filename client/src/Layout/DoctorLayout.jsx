@@ -1,16 +1,15 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 import useDocumentTitle from "../hooks/useDocumentTitle";
-import useAdminContext from "../hooks/useAdminContext";
-import { AdminLogin } from "../pages/Admin/AdminLogin";
+import UseDoctorContext from "../hooks/UseDoctorContext";
 import Navbar from "../components/Admin/Navbar";
 import Sidebar from "../components/Admin/Sidebar";
-import { Outlet } from "react-router-dom";
+import { AdminLogin } from "../pages/Admin/AdminLogin";
 
-const AdminLayout = () => {
-  useDocumentTitle("Prescripto | Admin");
-
-  const { aToken } = useAdminContext();
-  return aToken ? (
+const DoctorLayout = () => {
+  useDocumentTitle("Prescripto | Doctor");
+  const { dToken } = UseDoctorContext();
+  return dToken ? (
     <main className="bg-[#F8F9FD]">
       <Navbar />
       <section>
@@ -25,4 +24,4 @@ const AdminLayout = () => {
   );
 };
 
-export default AdminLayout;
+export default DoctorLayout;

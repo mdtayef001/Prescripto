@@ -35,6 +35,9 @@ const Navbar = () => {
         <li>
           <NavLink to="/contact">Contact</NavLink>
         </li>
+        <li>
+          <NavLink to="/admin">Admin</NavLink>
+        </li>
       </ul>
       {token ? (
         <div className="hidden md:flex  items-center gap-2 cursor-pointer group relative">

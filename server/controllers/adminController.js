@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import doctorModel from "../models/doctorModel.js";
 import jwt from "jsonwebtoken";
 import appointmentModel from "../models/appointmentModel.js";
+import userModel from "../models/userModel.js";
 
 // api for adding doctor
 const addDoctor = async (req, res) => {
@@ -188,10 +189,37 @@ const cancelAppointment = async (req, res) => {
   }
 };
 
+// api to get dashboard data
+
+const dashboardData = async (req, res) => {
+  try {
+    const doctors = await doctorModel.find({});
+    const users = await userModel.find({});
+    const appointments = await appointmentModel.find({});
+    const dashData = {
+      doctors: doctors.length,
+      patients: users.length,
+      appointments: appointments.length,
+      latestAppointments: appointments.reverse().slice(0, 5),
+    };
+    res.status(200).json({
+      success: true,
+      dashData,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 export {
   addDoctor,
   adminLogin,
   allDoctors,
   appointmentsList,
   cancelAppointment,
+  dashboardData,
 };

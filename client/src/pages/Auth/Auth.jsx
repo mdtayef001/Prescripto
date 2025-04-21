@@ -8,8 +8,8 @@ const Auth = () => {
   useDocumentTitle("Appointment | Auth");
   const { token, setToken, axiosPublic } = useAppContext();
   const [state, setState] = useState("Sign Up");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("test@gmail.com");
+  const [password, setPassword] = useState("tayef098");
   const [name, setName] = useState("");
   const navigate = useNavigate();
 
