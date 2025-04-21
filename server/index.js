@@ -22,6 +22,8 @@ app.use(
     credentials: true,
   })
 );
+// connect to database
+connectDB();
 
 // api endpoint
 app.use("/api/admin", adminRouter);
@@ -35,5 +37,4 @@ app.get("/", async (req, res) => {
 // start the app
 app.listen(port, async () => {
   console.log(`Server is running at ${port}`);
-  connectDB();
 });
