@@ -12,7 +12,16 @@ const port = process.env.PORT || 4000;
 
 // middlewares
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "https://prescripto-c3bfc.web.app",
+      "https://prescripto-c3bfc.firebaseapp.com",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    credentials: true,
+  })
+);
 
 // api endpoint
 app.use("/api/admin", adminRouter);
