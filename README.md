@@ -1,5 +1,11 @@
 # Prescripto
 
+## Live Demo
+
+[**Prescripto**](https://prescripto-c3bfc.web.app/) 🚀  
+
+---
+
 ## Overview
 
 **Prescripto** is a web application that allows seamless interaction between administrators, doctors, and patients. Users can manage appointments, edit profiles, and handle other essential medical operations efficiently.
@@ -15,13 +21,11 @@
 ### User Features
 
 - **Admin**:
-
   - Manage doctors and patients
   - Cancel appointments
   - View system analytics
 
 - **Doctor**:
-
   - View and manage their appointments
   - Edit their profile
   - Cancel appointments if necessary
@@ -54,47 +58,22 @@
 
 - **Express.js** (Server-side framework)
 - **MongoDB** (Database)
-- **Mongoose** (ODM for MongoDB)
+- **Mongoose** (Schema definition and data modeling)
 - **Bcrypt** (Password hashing)
+- **JWT** (Authentication & Authorization)
+- **Validator** (Data validation)
 - **CORS** (Cross-Origin Resource Sharing)
-- **JWT** (Authentication)
 
-## Installation
+### Backend Overview
 
-### Prerequisites
+The backend of **Prescripto** is developed using **Node.js** and **Express.js**, designed for performance, scalability, and security. It manages all server-side logic, authentication, and database operations.
 
-Ensure you have **Node.js** and **npm** installed on your system.
+#### Key Backend Features:
 
-### Steps to Run Locally
+- Secure authentication and authorization using **JWT**
+- Encrypted password storage with **Bcrypt**
+- Data validation with **Validator** and **Mongoose**
+- RESTful API endpoints for users, doctors, and appointments
+- Role-based access for **Admin**, **Doctor**, and **Patient**
+- Error handling and response standardization
 
-1. **Clone the repository:**
-
-   ```bash
-   git clone https://github.com/mdtayef001/Prescripto.git
-   cd prescripto
-   ```
-
-2. **Install dependencies:**
-
-   ```bash
-   npm install
-   ```
-
-3. **Run the application:**
-   ```bash
-   npm run dev
-   ```
-
-### Environment Variables
-
-Create a `.env` file in the root directory and add necessary environment variables:
-
-```env
-REACT_APP_API_URL=your_api_endpoint
-```
-
-## Live Demo
-
-[Prescripto](https://prescripto-c3bfc.web.app/) 🚀
-
-\*\*Backend (Under Development)
